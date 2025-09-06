@@ -23,9 +23,9 @@ export function AetherInterface() {
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-background">
-        <Sidebar className="border-r" aria-label="Navigation sidebar">
-          <SidebarContent className="p-4 space-y-4">
+      <div className="flex h-screen w-full max-w-full overflow-hidden bg-background">
+        <Sidebar className="border-r flex-shrink-0" aria-label="Navigation sidebar">
+          <SidebarContent className="p-4 space-y-4 overflow-y-auto">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">Aether UI</h2>
               <ThemeToggle />
@@ -35,9 +35,9 @@ export function AetherInterface() {
           </SidebarContent>
         </Sidebar>
 
-        <div className="flex-1 flex flex-col">
-          <header className="border-b p-4 flex items-center justify-between" role="banner">
-            <div className="flex items-center gap-4">
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          <header className="border-b p-4 flex items-center justify-between flex-shrink-0" role="banner">
+            <div className="flex items-center gap-4 min-w-0">
               <SidebarTrigger>
                 <Button
                   variant="ghost"
@@ -48,15 +48,18 @@ export function AetherInterface() {
                   <Menu className="h-4 w-4" />
                 </Button>
               </SidebarTrigger>
-              <h1 className="text-xl font-bold">Aether UI - AI Interface Prototype</h1>
+              <h1 className="text-xl font-bold truncate">Aether UI - AI Interface Prototype</h1>
             </div>
           </header>
 
-          <main id="main-content" className="flex-1 flex flex-col lg:flex-row" role="main">
-            <div className="flex-1 p-4">
+          <main id="main-content" className="flex-1 flex flex-col xl:flex-row min-h-0 overflow-hidden" role="main">
+            <div className="flex-1 p-4 min-w-0 overflow-hidden">
               <ChatArea />
             </div>
-            <aside className="w-full lg:w-96 border-t lg:border-t-0 lg:border-l p-4" aria-label="Prompt editor">
+            <aside
+              className="w-full xl:w-96 xl:max-w-md border-t xl:border-t-0 xl:border-l p-4 flex-shrink-0 overflow-y-auto"
+              aria-label="Prompt editor"
+            >
               <PromptEditor />
             </aside>
           </main>

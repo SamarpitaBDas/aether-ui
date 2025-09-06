@@ -122,15 +122,20 @@ export function PromptEditor() {
   const selectedTemplateData = templates.find((t) => t.id === selectedTemplate)
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-full">
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center justify-between">
             Prompt Editor
             {selectedTemplateData && (
-              <Button variant="ghost" size="sm" onClick={() => setShowTemplateForm(!showTemplateForm)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowTemplateForm(!showTemplateForm)}
+                className="text-xs"
+              >
                 <Wand2 className="h-3 w-3 mr-1" />
-                Configure
+                <span className="hidden sm:inline">Configure</span>
               </Button>
             )}
           </CardTitle>
@@ -147,9 +152,9 @@ export function PromptEditor() {
               <SelectContent>
                 {templates.map((template) => (
                   <SelectItem key={template.id} value={template.id}>
-                    <div className="flex items-center gap-2">
-                      <span>{template.name}</span>
-                      <Badge variant="outline" className="text-xs">
+                    <div className="flex items-center gap-2 max-w-full">
+                      <span className="truncate">{template.name}</span>
+                      <Badge variant="outline" className="text-xs flex-shrink-0">
                         {template.category}
                       </Badge>
                     </div>
@@ -161,7 +166,7 @@ export function PromptEditor() {
 
           {selectedTemplateData && !showTemplateForm && (
             <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">{selectedTemplateData.description}</p>
+              <p className="text-xs text-muted-foreground break-words">{selectedTemplateData.description}</p>
             </div>
           )}
 
@@ -174,7 +179,7 @@ export function PromptEditor() {
               placeholder="Enter your prompt here..."
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              className="min-h-32 resize-none"
+              className="min-h-24 sm:min-h-32 resize-none"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                   e.preventDefault()
@@ -182,7 +187,10 @@ export function PromptEditor() {
                 }
               }}
             />
-            <p className="text-xs text-muted-foreground">Press Cmd/Ctrl + Enter to send • Ctrl + K to clear chat</p>
+            <p className="text-xs text-muted-foreground">
+              <span className="hidden sm:inline">Press Cmd/Ctrl + Enter to send • Ctrl + K to clear chat</span>
+              <span className="sm:hidden">Cmd/Ctrl + Enter to send</span>
+            </p>
           </div>
 
           <Button
@@ -193,7 +201,8 @@ export function PromptEditor() {
             {sending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Sending...
+                <span className="hidden sm:inline">Sending...</span>
+                <span className="sm:hidden">...</span>
               </>
             ) : (
               <>

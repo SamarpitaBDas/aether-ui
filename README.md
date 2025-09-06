@@ -4,7 +4,7 @@ A comprehensive AI interface prototype built with Next.js, React, TypeScript, an
 
 ## 🚀 Live Demo
 
-[Deploy to Vercel](https://vercel.com/new/clone?repository-url=https://github.com/your-username/aether-ui)
+[Deployment link](https://aether-ui.netlify.app/)
 
 ## 📋 Table of Contents
 

@@ -134,14 +134,14 @@ export function ChatArea() {
 
   if (state.messages.length === 0) {
     return (
-      <div className="h-full flex items-center justify-center">
-        <div className="text-center space-y-4">
+      <div className="h-full flex items-center justify-center p-4">
+        <div className="text-center space-y-4 max-w-md">
           <div className="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center">
             <Bot className="w-8 h-8 text-muted-foreground" />
           </div>
           <div className="space-y-2">
             <h3 className="text-lg font-semibold">Start a conversation</h3>
-            <p className="text-muted-foreground text-sm max-w-md">
+            <p className="text-muted-foreground text-sm">
               Select a model and enter a prompt to begin chatting with AI. You can use templates to get started quickly.
             </p>
           </div>
@@ -151,36 +151,36 @@ export function ChatArea() {
   }
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
+    <div className="h-full flex flex-col max-w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 flex-shrink-0">
+        <div className="flex items-center gap-2 min-w-0">
           <h2 className="text-lg font-semibold">Chat</h2>
           {state.selectedModel && (
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="secondary" className="text-xs truncate">
               {state.selectedModel}
             </Badge>
           )}
-          <Badge variant="outline" className="text-xs">
+          <Badge variant="outline" className="text-xs flex-shrink-0">
             {state.messages.length} messages
           </Badge>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <div className="relative">
             <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-muted-foreground" />
             <Input
               placeholder="Search messages..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-7 h-8 w-40 text-xs"
+              className="pl-7 h-8 w-32 sm:w-40 text-xs"
               aria-label="Search chat messages"
             />
           </div>
 
           <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="sm" aria-label="Import chat from file">
-                <Upload className="w-4 h-4 mr-2" />
-                Import
+              <Button variant="ghost" size="sm" aria-label="Import chat from file" className="text-xs">
+                <Upload className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Import</span>
               </Button>
             </DialogTrigger>
             <DialogContent aria-labelledby="import-dialog-title">
@@ -203,68 +203,73 @@ export function ChatArea() {
             </DialogContent>
           </Dialog>
 
-          <Button variant="ghost" size="sm" onClick={downloadChat} aria-label="Export chat to file">
-            <Download className="w-4 h-4 mr-2" />
-            Export
+          <Button variant="ghost" size="sm" onClick={downloadChat} aria-label="Export chat to file" className="text-xs">
+            <Download className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline">Export</span>
           </Button>
-          <Button variant="ghost" size="sm" onClick={clearMessages} aria-label="Clear all messages">
-            <Trash2 className="w-4 h-4 mr-2" />
-            Clear
+          <Button variant="ghost" size="sm" onClick={clearMessages} aria-label="Clear all messages" className="text-xs">
+            <Trash2 className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline">Clear</span>
           </Button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-4 pr-2" role="log" aria-live="polite" aria-label="Chat messages">
+      <div
+        className="flex-1 overflow-y-auto space-y-4 pr-1 sm:pr-2 min-h-0"
+        role="log"
+        aria-live="polite"
+        aria-label="Chat messages"
+      >
         {filteredMessages.map((message, index) => (
           <Card
             key={message.id}
             className={cn(
               "relative group",
-              message.role === "user" ? "ml-12" : "mr-12",
+              message.role === "user" ? "ml-4 sm:ml-8 lg:ml-12" : "mr-4 sm:mr-8 lg:mr-12",
               message.role === "user" ? "bg-primary/5" : "bg-muted/50",
             )}
             role="article"
             aria-label={`${message.role} message ${index + 1}`}
           >
-            <CardContent className="p-4">
-              <div className="flex items-start gap-3">
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-start gap-2 sm:gap-3">
                 <div
                   className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+                    "w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0",
                     message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted",
                   )}
                   aria-hidden="true"
                 >
-                  {message.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                  {message.role === "user" ? (
+                    <User className="w-3 h-3 sm:w-4 sm:h-4" />
+                  ) : (
+                    <Bot className="w-3 h-3 sm:w-4 sm:h-4" />
+                  )}
                 </div>
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2">
+                <div className="flex-1 space-y-2 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-medium capitalize">{message.role}</span>
                     <time className="text-xs text-muted-foreground" dateTime={message.timestamp.toISOString()}>
                       {message.timestamp.toLocaleTimeString()}
                     </time>
                     {message.model && (
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className="text-xs truncate max-w-24">
                         {message.model}
                       </Badge>
                     )}
                   </div>
                   <div className="prose prose-sm max-w-none dark:prose-invert">
-                    <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed break-words">{message.content}</p>
                   </div>
                 </div>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0"
                   onClick={() => copyMessage(message.content, message.id)}
                   aria-label={`Copy ${message.role} message to clipboard`}
                 >
-                  {copiedMessageId === message.id ? (
-                    <Check className="w-3 h-3 text-green-500" />
-                  ) : (
-                    <Copy className="w-3 h-3" />
-                  )}
+                  {copiedMessageId === message.id ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                 </Button>
               </div>
             </CardContent>
